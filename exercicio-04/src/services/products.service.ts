@@ -22,18 +22,24 @@ class ProductsService {
         return product
     };
 
-    update(id: string, product: Products) {
-        const productId = this.products.findIndex((product) => product.id === parseInt(id))
-        if(productId === -1){
+    update(id: string, updatedFields: Partial<Products>) {
+        const productIndex = this.products.findIndex((product) => product.id === parseInt(id))
+        if (productIndex === -1) {
             throw new Error('Produto não encontrado!')
         }
-        this.products[productId] = product
-        return {message: 'Produto atualizado com sucesso!'}
+
+        const updatedProduct = {
+            ...this.products[productIndex],
+            ...updatedFields
+        }
+
+        this.products[productIndex] = updatedProduct
+        return { message: 'Produto atualizado com sucesso!' }
     };
 
     delete(id: string) {
         const productIndex = this.products.findIndex((product) => product.id === parseInt(id))
-        if(productIndex === -1){
+        if (productIndex === -1) {
             throw new Error('Produto não encontrado!')
         }
         this.products.splice(productIndex, 1)
